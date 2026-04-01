@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "title_ar": "متجر إلكتروني متكامل",
+    "title_en": "Full E-Commerce Store",
+    "description_ar": "تطوير متجر إلكتروني متكامل على ووردبريس مع بوابات دفع متعددة وتحسين محركات البحث وتجربة مستخدم احترافية.",
+    "description_en": "A full-featured e-commerce store built on WordPress with multiple payment gateways, SEO optimization, and a professional user experience.",
+    "category": "WordPress",
+    "image": "",
+    "gallery": [],
+    "technologies": ["WordPress", "WooCommerce", "Elementor", "ACF", "Yoast SEO"],
+    "features": [
+      "بوابات دفع متعددة (مدى، فيزا، باي بال)",
+      "نظام تتبع الطلبات",
+      "لوحة إدارة مخصصة",
+      "تحسين SEO متقدم",
+      "متوافق مع الجوال بالكامل"
+    ],
+    "role": "Full Development",
+    "client": "Company Project",
+    "project_url": "https://example.com",
+    "github_url": "",
+    "status": "Live",
+    "date": "2025-01"
+  },
+  {
+    "id": 2,
+    "title_ar": "متجر سلة احترافي",
+    "title_en": "Professional Salla Store",
+    "description_ar": "تصميم وتطوير قالب مخصص لمتجر سلة مع واجهة مستخدم عصرية وتجربة تسوق سلسة وسرعة تحميل عالية.",
+    "description_en": "Custom Salla store theme with a modern UI, smooth shopping experience, and high performance.",
+    "category": "Salla",
+    "image": "",
+    "gallery": [],
+    "technologies": ["Salla", "Liquid", "JavaScript", "CSS3"],
+    "features": [
+      "قالب مخصص بالكامل",
+      "تجربة مستخدم محسّنة",
+      "متوافق مع الموبايل",
+      "سرعة تحميل عالية",
+      "تكامل مع بوابات الدفع السعودية"
+    ],
+    "role": "Theme Development",
+    "client": "Private Client",
+    "project_url": "https://example.com",
+    "github_url": "",
+    "status": "Live",
+    "date": "2025-03"
+  },
+  {
+    "id": 3,
+    "title_ar": "دورة ووردبريس للمبتدئين",
+    "title_en": "WordPress for Beginners",
+    "description_ar": "برنامج تدريبي شامل يغطي أساسيات ووردبريس من الصفر حتى الاحتراف مع مشاريع عملية تفاعلية.",
+    "description_en": "A comprehensive training program covering WordPress from basics to advanced, with hands-on practical projects.",
+    "category": "Training",
+    "image": "",
+    "gallery": [],
+    "technologies": ["WordPress", "WooCommerce", "Elementor", "Figma"],
+    "features": [
+      "10 وحدات تدريبية مفصّلة",
+      "مشاريع عملية تفاعلية",
+      "شهادة إتمام معتمدة",
+      "دعم مستمر بعد الدورة",
+      "مجموعة خاصة على واتساب"
+    ],
+    "role": "Trainer & Curriculum Designer",
+    "client": "Open Enrollment",
+    "project_url": "",
+    "github_url": "",
+    "status": "Live",
+    "date": "2024-12"
+  }
+]

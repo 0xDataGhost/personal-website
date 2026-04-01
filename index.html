@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<!-- lang and dir are set dynamically by initLang() in script.js -->
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ── Header ────────────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="container">
+      <a class="site-logo" href="#home">Portfolio<span>.</span></a>
+      <nav class="nav-links" aria-label="Site navigation">
+        <a class="nav-link" href="#about"     data-i18n="nav_about">من أنا</a>
+        <a class="nav-link" href="#portfolio" data-i18n="nav_work">أعمالي</a>
+        <a class="nav-link" href="#contact"   data-i18n="nav_contact">تواصل</a>
+        <!-- <a class="nav-link always-show" href="dashboard.html" data-i18n="nav_dashboard">⚙️ لوحة التحكم</a> -->
+        <!-- Theme toggle — label updated by applyTheme() -->
+        <button class="theme-toggle always-show" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+        <!-- Language toggle — label shows the OTHER language (click to switch) -->
+        <button class="lang-toggle always-show" onclick="toggleLang()" aria-label="Toggle language">EN</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── Hero ──────────────────────────────────────────────── -->
+  <section class="hero" id="home">
+    <div class="hero-avatar">👨‍💻</div>
+    <p class="hero-greeting" data-i18n="hero_greeting">مرحباً، أنا</p>
+    <!-- ✏️ Replace with your name -->
+    <h1 data-i18n="hero_name">Hesham Ali</h1>
+    <p class="hero-role" data-i18n="hero_role">مطوّر ووردبريس · خبير سلة · مدرّب</p>
+    <p class="hero-bio" data-i18n="hero_bio">
+      أبني تجارب رقمية — من متاجر التجارة الإلكترونية والقوالب المخصصة إلى برامج التدريب التي ترتقي بالفرق.
+    </p>
+    <div class="hero-cta">
+      <a href="#portfolio" class="btn-outline" data-i18n="hero_cta_work">شاهد أعمالي</a>
+      <a href="#contact"   class="btn-ghost"   data-i18n="hero_cta_contact">تواصل معي</a>
+    </div>
+  </section>
+
+  <!-- ── About ─────────────────────────────────────────────── -->
+  <section class="about-section" id="about">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-i18n="about_heading">من أنا</h2>
+        <p  data-i18n="about_sub">مطوّر يهتم بكل التفاصيل</p>
+        <div class="accent-line"></div>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-text">
+          <h3 data-i18n="about_bg">نبذة</h3>
+          <!-- ✏️ Update paragraphs to match your story -->
+          <p data-i18n="about_p1">
+            مطوّر ويب متخصص في ووردبريس وسلة للتجارة الإلكترونية. عملت على مشاريع متنوعة من مواقع الشركات الصغيرة إلى المتاجر الكبيرة، مع التركيز دائماً على الأداء وتجربة المستخدم.
+          </p>
+          <p data-i18n="about_p2">
+            بجانب التطوير، أستمتع بنقل المعرفة — من خلال دورات تدريبية وورش عمل تجعل المفاهيم المعقدة في متناول الجميع.
+          </p>
+        </div>
+
+        <div class="about-skills">
+          <div class="skill-group">
+            <h4 data-i18n="about_skills_wp">ووردبريس</h4>
+            <div class="skill-tags">
+              <span class="skill-tag">WooCommerce</span>
+              <span class="skill-tag">Elementor</span>
+              <span class="skill-tag">ACF</span>
+              <span class="skill-tag">Custom Themes</span>
+              <span class="skill-tag">Plugin Dev</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <h4 data-i18n="about_skills_salla">سلة</h4>
+            <div class="skill-tags">
+              <span class="skill-tag">Salla Themes</span>
+              <span class="skill-tag">Salla Apps</span>
+              <span class="skill-tag">Liquid</span>
+              <span class="skill-tag">Salla CLI</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <h4 data-i18n="about_skills_gen">عام</h4>
+            <div class="skill-tags">
+              <span class="skill-tag">HTML / CSS</span>
+              <span class="skill-tag">JavaScript</span>
+              <span class="skill-tag">Git</span>
+              <span class="skill-tag">Figma</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Portfolio ─────────────────────────────────────────── -->
+  <section class="portfolio-section" id="portfolio">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-i18n="portfolio_heading">أعمالي</h2>
+        <p  data-i18n="portfolio_sub">مشاريع بنيتها في ووردبريس وسلة والتدريب</p>
+        <div class="accent-line"></div>
+      </div>
+
+      <!-- Filter buttons — clicking re-renders cards instantly -->
+      <div class="filter-bar" role="group" aria-label="Filter projects">
+        <button class="filter-btn active" data-filter="all"       data-i18n="filter_all">الكل</button>
+        <button class="filter-btn"        data-filter="WordPress" data-i18n="filter_wp">ووردبريس</button>
+        <button class="filter-btn"        data-filter="Salla"     data-i18n="filter_salla">سلة</button>
+        <button class="filter-btn"        data-filter="Training"  data-i18n="filter_training">تدريب</button>
+      </div>
+
+      <p class="section-title" id="results-label" data-i18n="results_all">جميع المشاريع</p>
+      <div class="projects-grid" id="projects-grid">
+        <!-- Cards injected by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Contact ───────────────────────────────────────────── -->
+  <section class="contact-section" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-i18n="contact_heading">تواصل معي</h2>
+        <p  data-i18n="contact_sub">لديك مشروع؟ لنتحدث.</p>
+        <div class="accent-line"></div>
+      </div>
+
+      <div class="contact-card">
+        <p data-i18n="contact_body">
+          سواء كنت تحتاج موقع ووردبريس، أو متجر سلة، أو ورشة تدريبية لفريقك — يسعدني الاستماع إليك.
+        </p>
+        <!-- ✏️ Replace hrefs with your actual links -->
+        <div class="contact-links">
+          <a class="contact-link" href="mailto:your@email.com"             data-i18n="contact_email">✉️ راسلني</a>
+          <a class="contact-link" href="https://github.com/"   target="_blank" rel="noopener" data-i18n="contact_github">🐙 GitHub</a>
+          <a class="contact-link" href="https://linkedin.com/" target="_blank" rel="noopener" data-i18n="contact_linkedin">💼 LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <p data-i18n="footer_text">صُنع بعناية — البيانات محفوظة محلياً في متصفحك.</p>
+  </footer>
+
+  <!-- ── Shared logic ──────────────────────────────────────── -->
+  <script src="script.js"></script>
+
+  <script>
+    /* ── Init: theme + language ─────────────────────────────── */
+    initTheme();
+    initLang();
+
+    /* ── Portfolio page logic ──────────────────────────────── */
+
+    const grid         = document.getElementById('projects-grid');
+    const filterBtns   = document.querySelectorAll('.filter-btn');
+    const resultsLabel = document.getElementById('results-label');
+
+    let activeFilter   = 'all';
+    let cachedProjects = []; // projects loaded once from data/projects.json
+
+    /* ── Skeleton loader — shown while fetch is in progress ─── */
+    function showSkeleton() {
+      grid.innerHTML = Array.from({ length: 3 }, () => `
+        <div class="skeleton-card">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-body">
+            <div class="skeleton-line short"></div>
+            <div class="skeleton-line medium"></div>
+            <div class="skeleton-line"></div>
+          </div>
+        </div>`).join('');
+    }
+
+    /**
+     * Renders cards from the cached projects array.
+     * Called after initial load, on filter change, and on 'langchange'.
+     * buildCard() reads getCurrentLang() at call time → correct language.
+     */
+    function renderPortfolio() {
+      grid.innerHTML = '';
+
+      const visible = activeFilter === 'all'
+        ? cachedProjects
+        : cachedProjects.filter(p => p.category === activeFilter);
+
+      if (visible.length === 0) {
+        const msg = cachedProjects.length === 0
+          ? t('empty_add_first')
+          : t('empty_no_cat');
+        grid.innerHTML = `
+          <div class="empty-state">
+            <span class="icon">🗂️</span>
+            <p>${msg}</p>
+          </div>`;
+        resultsLabel.textContent = activeFilter === 'all' ? t('results_all') : activeFilter;
+        return;
+      }
+
+      visible.forEach(p => grid.appendChild(buildCard(p)));
+
+      const label = activeFilter === 'all' ? t('results_all') : activeFilter;
+      resultsLabel.textContent = `${label} (${visible.length})`;
+    }
+
+    /**
+     * Fetches data/projects.json once, caches the result, then renders.
+     * On error shows a friendly message (fetch fails locally without a server).
+     */
+    async function loadProjects() {
+      showSkeleton();
+      cachedProjects = await fetchProjects();
+
+      if (cachedProjects.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <span class="icon">📂</span>
+            <p>${t('empty_error')}</p>
+          </div>`;
+        resultsLabel.textContent = t('results_all');
+        return;
+      }
+
+      renderPortfolio();
+    }
+
+    /* Filter buttons — instant re-render from cache, no fetch */
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = btn.dataset.filter;
+        renderPortfolio();
+      });
+    });
+
+    /* Re-render on language switch (titles/descs update from cache) */
+    document.addEventListener('langchange', renderPortfolio);
+
+    /* Initial load */
+    loadProjects();
+  </script>
+
+</body>
+</html>

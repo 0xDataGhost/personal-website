@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<!-- lang and dir are set dynamically by initLang() in script.js -->
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project — Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ── Header ────────────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="container">
+      <a class="site-logo" href="index.html">Portfolio<span>.</span></a>
+      <nav class="nav-links">
+        <a class="nav-link always-show" href="index.html#portfolio" data-i18n="nav_work">أعمالي</a>
+        <button class="theme-toggle always-show" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+        <button class="lang-toggle always-show"  onclick="toggleLang()"  aria-label="Toggle language">EN</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── Project detail ────────────────────────────────────── -->
+  <main class="project-page">
+    <div class="container">
+
+      <!-- Back link -->
+      <a href="index.html#portfolio" class="back-link" data-i18n="proj_back">← العودة للأعمال</a>
+
+      <!-- Project content injected by JS -->
+      <div id="project-content"></div>
+
+    </div>
+  </main>
+
+  <!-- ── Footer ────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <p data-i18n="footer_text">صُنع بعناية — البيانات محفوظة محلياً في متصفحك.</p>
+  </footer>
+
+  <script src="script.js"></script>
+
+  <script>
+    /* ── Init ───────────────────────────────────────────────── */
+    initTheme();
+    initLang();
+
+    const contentEl = document.getElementById('project-content');
+    let projectData  = null; // cached after fetch
+
+    /* ── URL param helper ───────────────────────────────────── */
+    function getProjectIdFromUrl() {
+      return new URLSearchParams(window.location.search).get('id');
+    }
+
+    /* ── Skeleton loader ─────────────────────────────────────── */
+    function showSkeleton() {
+      contentEl.innerHTML = `
+        <div class="skeleton-card" style="max-width:100%; margin-top:24px;">
+          <div class="skeleton-img" style="height:320px; border-radius:12px;"></div>
+          <div class="skeleton-body">
+            <div class="skeleton-line short"></div>
+            <div class="skeleton-line medium"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line medium"></div>
+          </div>
+        </div>`;
+    }
+
+    /* ── Render full project detail ─────────────────────────── */
+    function renderProject(project) {
+      const title = getProjectTitle(project);
+      const desc  = getProjectDesc(project);
+
+      document.title = `${title} — Portfolio`;
+
+      /* ---- Main image ---- */
+      const imageHtml = project.image
+        ? `<img src="${escapeHtml(project.image)}" alt="${escapeHtml(title)}" style="width:100%;border-radius:12px;">`
+        : `<div class="card-image-placeholder">${categoryIcon(project.category)}</div>`;
+
+      /* ---- Badges ---- */
+      const companyBadge = project.category === 'WordPress'
+        ? `<span class="badge-company">${t('card_company')}</span>` : '';
+
+      /* ---- Status badge ---- */
+      const statusMap = { Live: 'live', 'In Progress': 'progress', Archived: 'archived' };
+      const statusClass = statusMap[project.status] || 'live';
+      const statusLabel = project.status
+        ? `<span class="status-badge status-${statusClass}">${t('status_' + statusClass)}</span>` : '';
+
+      /* ---- Technologies ---- */
+      const techHtml = (project.technologies && project.technologies.length)
+        ? `<div class="proj-section">
+             <h3 class="proj-section-title">${t('proj_technologies')}</h3>
+             <div class="tech-tags">
+               ${project.technologies.map(tech => `<span class="tech-tag">${escapeHtml(tech)}</span>`).join('')}
+             </div>
+           </div>` : '';
+
+      /* ---- Features ---- */
+      const featHtml = (project.features && project.features.length)
+        ? `<div class="proj-section">
+             <h3 class="proj-section-title">${t('proj_features')}</h3>
+             <ul class="features-list">
+               ${project.features.map(f => `<li>${escapeHtml(f)}</li>`).join('')}
+             </ul>
+           </div>` : '';
+
+      /* ---- Info box ---- */
+      const infoRows = [
+        project.role   ? `<div class="info-row"><span class="info-label">${t('proj_role')}</span><span>${escapeHtml(project.role)}</span></div>` : '',
+        project.client ? `<div class="info-row"><span class="info-label">${t('proj_client')}</span><span>${escapeHtml(project.client)}</span></div>` : '',
+        project.date   ? `<div class="info-row"><span class="info-label">${t('proj_date')}</span><span>${escapeHtml(project.date)}</span></div>` : '',
+        project.status ? `<div class="info-row"><span class="info-label">${t('proj_status')}</span>${statusLabel}</div>` : '',
+      ].filter(Boolean).join('');
+
+      const infoHtml = infoRows
+        ? `<div class="proj-section">
+             <h3 class="proj-section-title">${t('proj_info_box')}</h3>
+             <div class="proj-info-box"><div class="info-rows">${infoRows}</div></div>
+           </div>` : '';
+
+      /* ---- Buttons ---- */
+      const visitBtn = project.project_url
+        ? `<a href="${escapeHtml(project.project_url)}" target="_blank" rel="noopener" class="btn-visit">${t('proj_visit')}</a>` : '';
+      const codeBtn = project.github_url
+        ? `<a href="${escapeHtml(project.github_url)}" target="_blank" rel="noopener" class="btn-code">${t('proj_view_code')}</a>` : '';
+
+      /* ---- Gallery ---- */
+      const galleryHtml = (project.gallery && project.gallery.length)
+        ? `<div class="proj-section proj-gallery">
+             <h3 class="proj-section-title">${t('proj_gallery')}</h3>
+             <div class="gallery-grid">
+               ${project.gallery.map(src => `<img src="${escapeHtml(src)}" alt="${escapeHtml(title)}" loading="lazy">`).join('')}
+             </div>
+           </div>` : '';
+
+      /* ---- Assemble ---- */
+      contentEl.innerHTML = `
+        <div class="project-detail">
+
+          <!-- Info column -->
+          <div class="project-detail-info">
+            <div class="proj-category">
+              <span class="badge badge-${categoryClass(project.category)}">${escapeHtml(project.category)}</span>
+              ${companyBadge}
+            </div>
+            <h1 class="proj-title">${escapeHtml(title)}</h1>
+            <p class="proj-desc">${escapeHtml(desc)}</p>
+
+            ${techHtml}
+            ${featHtml}
+            ${infoHtml}
+
+            <div class="proj-actions">
+              ${visitBtn}
+              ${codeBtn}
+            </div>
+          </div>
+
+          <!-- Image column -->
+          <div class="project-detail-image">
+            ${imageHtml}
+          </div>
+
+        </div>
+
+        ${galleryHtml}
+      `;
+    }
+
+    /* ── Not-found state ────────────────────────────────────── */
+    function showNotFound() {
+      document.title = 'Project Not Found — Portfolio';
+      contentEl.innerHTML = `
+        <div class="empty-state" style="padding:80px 20px;">
+          <span class="icon">🔍</span>
+          <p style="margin-bottom:20px">${t('proj_not_found')}</p>
+          <a href="index.html" class="btn-outline"
+             style="display:inline-flex;align-items:center;gap:6px;padding:10px 24px;
+                    border:2px solid var(--color-primary);border-radius:50px;
+                    color:var(--color-primary);text-decoration:none;font-weight:700;">
+            ${t('proj_go_home')}
+          </a>
+        </div>`;
+    }
+
+    /* ── Load + render ──────────────────────────────────────── */
+    async function loadProject() {
+      const projectId = getProjectIdFromUrl();
+      if (!projectId) { showNotFound(); return; }
+
+      showSkeleton();
+
+      const projects = await fetchProjects();
+      projectData = projects.find(p => String(p.id) === String(projectId));
+
+      if (!projectData) { showNotFound(); return; }
+
+      renderProject(projectData);
+    }
+
+    /* Re-render on language change (title/desc/labels update) */
+    document.addEventListener('langchange', () => {
+      if (projectData) renderProject(projectData);
+    });
+
+    /* Initial load */
+    loadProject();
+  </script>
+
+</body>
+</html>

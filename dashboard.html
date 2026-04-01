@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════════
+       LOGIN OVERLAY — auth stays in sessionStorage
+       ✏️  Change DASHBOARD_PASSWORD below.
+       ══════════════════════════════════════════════════════════ -->
+  <div class="login-overlay" id="login-overlay">
+    <div class="login-card">
+      <span class="login-icon">🔐</span>
+      <h2 data-i18n="login_heading">تسجيل الدخول</h2>
+      <p class="login-sub" data-i18n="login_sub">أدخل كلمة المرور للمتابعة</p>
+      <div class="login-error" id="login-error" data-i18n="login_error">كلمة المرور غير صحيحة. حاول مجدداً.</div>
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label for="login-password" data-i18n="login_pwd_label">كلمة المرور</label>
+          <div class="password-wrap">
+            <input type="password" id="login-password"
+              data-i18n-ph="login_pwd_ph" placeholder="أدخل كلمة المرور"
+              autocomplete="current-password" required>
+            <button type="button" class="password-eye" id="pw-eye">👁</button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" data-i18n="login_btn">فتح اللوحة</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── Header ────────────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="container">
+      <a class="site-logo" href="index.html">Portfolio<span>.</span></a>
+      <nav class="nav-links">
+        <a class="nav-link always-show" href="index.html" data-i18n="nav_view_site">عرض الموقع →</a>
+        <button class="theme-toggle always-show" onclick="toggleTheme()">🌙</button>
+        <button class="lang-toggle  always-show" onclick="toggleLang()">EN</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── Dashboard body ────────────────────────────────────── -->
+  <div class="container">
+    <div class="dashboard-wrap">
+
+      <!-- ════════════════════════════════════════════════════
+           LEFT PANEL — Project form (fills all fields)
+           The form does NOT save to localStorage or any server.
+           Clicking "Generate JSON" converts inputs into a JSON
+           object that the user pastes into data/projects.json.
+           ════════════════════════════════════════════════════ -->
+      <aside>
+        <div class="panel">
+          <h2 class="panel-title" data-i18n="dash_add_title">➕ إضافة مشروع</h2>
+
+          <form id="project-form" novalidate>
+
+            <!-- ── Bilingual titles ─────────────────────── -->
+            <div class="form-group">
+              <label for="field-title-ar" data-i18n="dash_title_ar">العنوان بالعربية *</label>
+              <input type="text" id="field-title-ar"
+                data-i18n-ph="dash_title_ar_ph" placeholder="مثال: متجر إلكتروني" required>
+            </div>
+
+            <div class="form-group">
+              <label for="field-title-en" data-i18n="dash_title_en">العنوان بالإنجليزية</label>
+              <input type="text" id="field-title-en"
+                data-i18n-ph="dash_title_en_ph" placeholder="e.g. E-Commerce Store">
+            </div>
+
+            <!-- ── Bilingual descriptions ───────────────── -->
+            <div class="form-group">
+              <label for="field-desc-ar" data-i18n="dash_desc_ar">الوصف بالعربية *</label>
+              <textarea id="field-desc-ar"
+                data-i18n-ph="dash_desc_ar_ph" placeholder="وصف مختصر..." required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="field-desc-en" data-i18n="dash_desc_en">الوصف بالإنجليزية</label>
+              <textarea id="field-desc-en"
+                data-i18n-ph="dash_desc_en_ph" placeholder="Short description…"></textarea>
+            </div>
+
+            <!-- ── Category ─────────────────────────────── -->
+            <div class="form-group">
+              <label for="field-category" data-i18n="dash_category">التصنيف *</label>
+              <select id="field-category" required>
+                <option value="" disabled selected data-i18n="dash_cat_select">اختر تصنيفاً</option>
+                <option value="WordPress">WordPress</option>
+                <option value="Salla">Salla</option>
+                <option value="Training">Training</option>
+              </select>
+            </div>
+
+            <!-- ── Image path (file path, not base64) ───── -->
+            <div class="form-group">
+              <label for="field-image" data-i18n="dash_image_label">مسار صورة المشروع</label>
+              <input type="text" id="field-image"
+                data-i18n-ph="dash_image_ph" placeholder="assets/images/project.jpg">
+            </div>
+
+            <!-- ── Gallery (one path per line) ──────────── -->
+            <div class="form-group">
+              <label for="field-gallery" data-i18n="dash_gallery_label">صور المعرض (مسار لكل سطر)</label>
+              <textarea id="field-gallery" style="min-height:70px"
+                data-i18n-ph="dash_gallery_ph"
+                placeholder="assets/images/gallery1.jpg"></textarea>
+            </div>
+
+            <!-- ── Technologies (comma-separated) ───────── -->
+            <div class="form-group">
+              <label for="field-tech" data-i18n="dash_tech_label">التقنيات (مفصولة بفاصلة)</label>
+              <input type="text" id="field-tech"
+                data-i18n-ph="dash_tech_ph" placeholder="WordPress, WooCommerce, ACF">
+            </div>
+
+            <!-- ── Features (one per line) ───────────────── -->
+            <div class="form-group">
+              <label for="field-features" data-i18n="dash_features_label">المميزات (ميزة لكل سطر)</label>
+              <textarea id="field-features" style="min-height:80px"
+                data-i18n-ph="dash_features_ph"
+                placeholder="بوابات دفع متعددة&#10;تتبع الطلبات"></textarea>
+            </div>
+
+            <!-- ── Role ─────────────────────────────────── -->
+            <div class="form-group">
+              <label for="field-role" data-i18n="dash_role_label">الدور</label>
+              <input type="text" id="field-role"
+                data-i18n-ph="dash_role_ph" placeholder="Full Development">
+            </div>
+
+            <!-- ── Client ───────────────────────────────── -->
+            <div class="form-group">
+              <label for="field-client" data-i18n="dash_client_label">العميل</label>
+              <input type="text" id="field-client"
+                data-i18n-ph="dash_client_ph" placeholder="Company Project">
+            </div>
+
+            <!-- ── URLs ─────────────────────────────────── -->
+            <div class="form-group">
+              <label for="field-url" data-i18n="dash_url_label">رابط المشروع (اختياري)</label>
+              <input type="text" id="field-url"
+                data-i18n-ph="dash_url_ph" placeholder="https://example.com">
+            </div>
+
+            <div class="form-group">
+              <label for="field-github" data-i18n="dash_github_label">رابط GitHub (اختياري)</label>
+              <input type="text" id="field-github"
+                data-i18n-ph="dash_github_ph" placeholder="https://github.com/...">
+            </div>
+
+            <!-- ── Status ────────────────────────────────── -->
+            <div class="form-group">
+              <label for="field-status" data-i18n="dash_status_label">الحالة</label>
+              <select id="field-status">
+                <option value="Live"        data-i18n="dash_status_live">منشور</option>
+                <option value="In Progress" data-i18n="dash_status_progress">قيد التطوير</option>
+                <option value="Archived"    data-i18n="dash_status_archived">مؤرشف</option>
+              </select>
+            </div>
+
+            <!-- ── Date (YYYY-MM) ────────────────────────── -->
+            <div class="form-group">
+              <label for="field-date" data-i18n="dash_date_label">التاريخ (YYYY-MM)</label>
+              <input type="text" id="field-date" maxlength="7"
+                data-i18n-ph="dash_date_ph" placeholder="2025-01">
+            </div>
+
+            <!-- ── Action buttons ────────────────────────── -->
+            <button type="submit" class="btn btn-primary" id="gen-btn" data-i18n="dash_gen_btn">
+              ⚡ توليد JSON
+            </button>
+            <button type="button" class="btn btn-secondary" id="reset-btn"
+              data-i18n="dash_reset_btn"
+              style="margin-top:10px;width:100%;">
+              ↺ إعادة تعيين
+            </button>
+
+          </form>
+        </div>
+      </aside>
+
+      <!-- ════════════════════════════════════════════════════
+           RIGHT PANEL — Current projects + JSON output
+           ════════════════════════════════════════════════════ -->
+      <section>
+        <div class="panel">
+
+          <!-- ── Current projects (loaded from JSON) ──────── -->
+          <h2 class="panel-title" data-i18n="dash_current_title">📁 المشاريع الحالية</h2>
+          <div id="existing-projects">
+            <!-- Injected async by loadExistingProjects() -->
+            <p class="output-placeholder" style="padding:16px 0">
+              <span data-i18n="empty_loading">جارٍ التحميل…</span>
+            </p>
+          </div>
+
+          <!-- ── JSON output ────────────────────────────────
+               Hidden until "Generate JSON" is clicked.
+               The textarea is always LTR (JSON format).
+               ─────────────────────────────────────────────── -->
+          <div id="output-panel" style="display:none; margin-top:24px;">
+            <h3 class="panel-title" style="margin-top:0" data-i18n="dash_output_title">📋 ناتج JSON</h3>
+            <textarea class="json-output" id="json-output" readonly spellcheck="false"></textarea>
+            <p class="output-note" data-i18n="dash_output_note">أضف هذا الكائن إلى مصفوفة data/projects.json</p>
+            <div class="output-actions">
+              <button class="btn btn-primary" style="width:auto" id="copy-btn" data-i18n="dash_copy_btn">نسخ</button>
+              <button class="btn btn-secondary" id="dl-btn" data-i18n="dash_download_btn">تحميل</button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ── Footer ────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <p data-i18n="footer_text">صُنع بعناية · هشام علي</p>
+  </footer>
+
+  <script src="script.js"></script>
+
+  <script>
+    /* ════════════════════════════════════════════════════════
+       AUTH
+       ════════════════════════════════════════════════════════ */
+    const DASHBOARD_PASSWORD = 'admin123'; // ← change this
+    const AUTH_KEY           = 'dashboardAuth';
+
+    const loginOverlay = document.getElementById('login-overlay');
+    const loginForm    = document.getElementById('login-form');
+    const loginError   = document.getElementById('login-error');
+    const pwInput      = document.getElementById('login-password');
+    const pwEye        = document.getElementById('pw-eye');
+
+    function checkAuth() {
+      if (sessionStorage.getItem(AUTH_KEY) === 'true') {
+        loginOverlay.classList.add('hidden');
+      }
+    }
+
+    loginForm.addEventListener('submit', e => {
+      e.preventDefault();
+      if (pwInput.value === DASHBOARD_PASSWORD) {
+        sessionStorage.setItem(AUTH_KEY, 'true');
+        loginOverlay.classList.add('hidden');
+        loginError.classList.remove('show');
+        pwInput.value = '';
+      } else {
+        loginError.classList.add('show');
+        pwInput.value = '';
+        pwInput.focus();
+      }
+    });
+
+    pwEye.addEventListener('click', () => {
+      const hidden = pwInput.type === 'password';
+      pwInput.type      = hidden ? 'text' : 'password';
+      pwEye.textContent = hidden ? '🙈' : '👁';
+    });
+
+    /* ── Init ──────────────────────────────────────────────── */
+    initTheme();
+    initLang();
+    checkAuth();
+
+    /* ════════════════════════════════════════════════════════
+       EXISTING PROJECTS — read-only list from data/projects.json
+       Gives the user context on what IDs are already in use.
+       ════════════════════════════════════════════════════════ */
+    const existingEl = document.getElementById('existing-projects');
+
+    async function loadExistingProjects() {
+      const projects = await fetchProjects();
+      existingEl.innerHTML = '';
+
+      if (projects.length === 0) {
+        existingEl.innerHTML = `<p class="output-placeholder" style="padding:16px 0; text-align:start"><span data-i18n="dash_current_none">${t('dash_current_none')}</span></p>`;
+
+        // If fetch returned empty, distinguish no-server from truly empty file
+        if (!window.location.protocol.startsWith('http')) {
+          existingEl.innerHTML = `<p class="output-note" style="padding:8px 0; color:var(--color-danger)">${t('dash_current_error')}</p>`;
+        }
+        return;
+      }
+
+      // Show a count badge in the panel title
+      const panelTitle = document.querySelector('[data-i18n="dash_current_title"]');
+      if (panelTitle) panelTitle.innerHTML = `${t('dash_current_title')} <span style="font-weight:400;font-size:.8rem;color:var(--color-muted)">(${projects.length})</span>`;
+
+      const list = document.createElement('div');
+      list.className = 'existing-list';
+
+      projects.forEach((p, i) => {
+        const title = getProjectTitle(p);
+        const div   = document.createElement('div');
+        div.className = 'existing-item';
+        div.innerHTML = `
+          <span class="item-num">${i + 1}</span>
+          <div class="item-info">
+            <div class="item-title">${escapeHtml(title)}</div>
+          </div>
+          <span class="badge badge-${categoryClass(p.category)}" style="font-size:.68rem">${p.category}</span>
+        `;
+        list.appendChild(div);
+      });
+
+      existingEl.appendChild(list);
+    }
+
+    // Re-render existing list on language change (titles switch lang)
+    document.addEventListener('langchange', loadExistingProjects);
+    loadExistingProjects();
+
+    /* ════════════════════════════════════════════════════════
+       JSON GENERATOR
+       Reads all form fields, builds a project object,
+       serialises it as formatted JSON, shows in the output panel.
+       The user then copies/downloads it and adds it manually to
+       data/projects.json.
+       ════════════════════════════════════════════════════════ */
+
+    const form       = document.getElementById('project-form');
+    const outputPanel= document.getElementById('output-panel');
+    const jsonOutput = document.getElementById('json-output');
+    const copyBtn    = document.getElementById('copy-btn');
+    const dlBtn      = document.getElementById('dl-btn');
+    const resetBtn   = document.getElementById('reset-btn');
+
+    /** Parses a textarea value (one item per line) into a trimmed string array. */
+    function parseLines(val) {
+      return val.split('\n').map(s => s.trim()).filter(Boolean);
+    }
+
+    /** Parses a comma-separated string into a trimmed string array. */
+    function parseComma(val) {
+      return val.split(',').map(s => s.trim()).filter(Boolean);
+    }
+
+    /* Form submit → generate JSON */
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const titleAr = document.getElementById('field-title-ar').value.trim();
+      const descAr  = document.getElementById('field-desc-ar').value.trim();
+      const cat     = document.getElementById('field-category').value;
+
+      if (!titleAr || !descAr || !cat) {
+        showToast(
+          getCurrentLang() === 'ar'
+            ? 'يرجى تعبئة الحقول الإلزامية (العنوان والوصف والتصنيف).'
+            : 'Please fill in the required fields (title, description, category).',
+          'error'
+        );
+        return;
+      }
+
+      // Build the project object matching data/projects.json schema
+      const project = {
+        id:             Date.now(),   // user should replace with a clean integer (1, 2, 3…)
+        title_ar:       titleAr,
+        title_en:       document.getElementById('field-title-en').value.trim(),
+        description_ar: descAr,
+        description_en: document.getElementById('field-desc-en').value.trim(),
+        category:       cat,
+        image:          document.getElementById('field-image').value.trim(),
+        gallery:        parseLines(document.getElementById('field-gallery').value),
+        technologies:   parseComma(document.getElementById('field-tech').value),
+        features:       parseLines(document.getElementById('field-features').value),
+        role:           document.getElementById('field-role').value.trim(),
+        client:         document.getElementById('field-client').value.trim(),
+        project_url:    document.getElementById('field-url').value.trim(),
+        github_url:     document.getElementById('field-github').value.trim(),
+        status:         document.getElementById('field-status').value,
+        date:           document.getElementById('field-date').value.trim(),
+      };
+
+      // Pretty-print JSON — always LTR for code readability
+      jsonOutput.value = JSON.stringify(project, null, 2);
+      outputPanel.style.display = 'block';
+
+      // Scroll to the output
+      outputPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    /* Reset form */
+    resetBtn.addEventListener('click', () => {
+      form.reset();
+      outputPanel.style.display = 'none';
+      jsonOutput.value = '';
+    });
+
+    /* Copy to clipboard */
+    copyBtn.addEventListener('click', () => {
+      if (!jsonOutput.value) return;
+      navigator.clipboard.writeText(jsonOutput.value)
+        .then(() => showToast(t('dash_copied'), 'success'))
+        .catch(() => {
+          // Fallback for browsers without clipboard API
+          jsonOutput.select();
+          document.execCommand('copy');
+          showToast(t('dash_copied'), 'success');
+        });
+    });
+
+    /* Download as project.json */
+    dlBtn.addEventListener('click', () => {
+      if (!jsonOutput.value) return;
+      const blob = new Blob([jsonOutput.value], { type: 'application/json' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = 'project.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    /* Update dynamic button text on language switch */
+    document.addEventListener('langchange', () => {
+      // Update the select option text (data-i18n handles labels but not option values)
+      document.querySelectorAll('option[data-i18n]').forEach(opt => {
+        const v = translations[getCurrentLang()][opt.dataset.i18n];
+        if (v) opt.textContent = v;
+      });
+    });
+  </script>
+
+</body>
+</html>
