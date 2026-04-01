@@ -25,7 +25,7 @@
   --color-success:    #68d391;
   --color-wp:         #4eb9e8;
   --color-salla:      #a78bfa;
-  --color-training:   #fbbf24;
+  --color-shopify:   #fbbf24;
   --radius:           12px;
   --shadow:           0 2px 16px rgba(0,0,0,.35);
   --shadow-hover:     0 8px 32px rgba(0,0,0,.5);
@@ -48,7 +48,7 @@
   --color-success:    #38a169;
   --color-wp:         #21759b;
   --color-salla:      #7c3aed;
-  --color-training:   #d97706;
+  --color-shopify:   #d97706;
   --shadow:           0 2px 12px rgba(0,0,0,.08);
   --shadow-hover:     0 6px 24px rgba(0,0,0,.13);
 }
@@ -489,12 +489,12 @@ body {
 }
 .badge-wordpress { background: rgba(78,185,232,.15); color: var(--color-wp); border: 1px solid rgba(78,185,232,.3); }
 .badge-salla     { background: rgba(167,139,250,.15); color: var(--color-salla); border: 1px solid rgba(167,139,250,.3); }
-.badge-training  { background: rgba(251,191,36,.15);  color: var(--color-training); border: 1px solid rgba(251,191,36,.3); }
+.badge-shopify  { background: rgba(251,191,36,.15);  color: var(--color-shopify); border: 1px solid rgba(251,191,36,.3); }
 
 /* Light mode badge overrides for better readability */
 [data-theme="light"] .badge-wordpress { background: #e8f4fb; border-color: #bee3f8; }
 [data-theme="light"] .badge-salla     { background: #ede9fe; border-color: #d6bcfa; }
-[data-theme="light"] .badge-training  { background: #fef3c7; border-color: #fde68a; }
+[data-theme="light"] .badge-shopify  { background: #fef3c7; border-color: #fde68a; }
 
 .badge-company {
   font-size: .67rem;
@@ -1299,7 +1299,7 @@ body.lang-transitioning { opacity: 0 !important; }
   font-weight: 700;
 }
 .status-live     { background: rgba(104,211,145,.12); color: var(--color-success);  border: 1px solid rgba(104,211,145,.3); }
-.status-progress { background: rgba(251,191,36,.12);  color: var(--color-training); border: 1px solid rgba(251,191,36,.3); }
+.status-progress { background: rgba(251,191,36,.12);  color: var(--color-shopify); border: 1px solid rgba(251,191,36,.3); }
 .status-archived { background: rgba(136,146,164,.12); color: var(--color-muted);    border: 1px solid var(--color-border); }
 
 /* "View Code" github button */

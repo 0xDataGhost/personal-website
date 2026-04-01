@@ -9,7 +9,7 @@
  *   title_en:       string  — English title
  *   description_ar: string  — Arabic description
  *   description_en: string  — English description
- *   category:       "WordPress" | "Salla" | "Training"
+ *   category:       "WordPress" | "Salla" | "Shopify"
  *   image:          string  — path like "assets/images/project.jpg" | ""
  *   gallery:        string[] — array of image paths
  *   technologies:   string[] — e.g. ["WordPress", "WooCommerce"]
@@ -77,7 +77,7 @@ function categoryClass(category) {
 
 /** Returns a category icon emoji. */
 function categoryIcon(category) {
-  const icons = { WordPress: '🌐', Salla: '🛒', Training: '🎓' };
+  const icons = { WordPress: '🌐', Salla: '🛒', Shopify: '🎓' };
   return icons[category] || '📁';
 }
 
@@ -246,11 +246,11 @@ const translations = {
     about_skills_gen:    'عام',
     /* ── Portfolio ──────────────────────────── */
     portfolio_heading:   'أعمالي',
-    portfolio_sub:       'مشاريع بنيتها في ووردبريس وسلة والتدريب',
+    portfolio_sub:       'مشاريع بنيتها في ووردبريس وسلة وشوبيفاي',
     filter_all:          'الكل',
     filter_wp:           'ووردبريس',
     filter_salla:        'سلة',
-    filter_training:     'تدريب',
+    filter_Shopify:     'شوبيفاي',
     results_all:         'جميع المشاريع',
     /* ── Contact ────────────────────────────── */
     contact_heading:     'تواصل معي',
@@ -364,11 +364,11 @@ const translations = {
     about_skills_gen:    'General',
     /* ── Portfolio ──────────────────────────── */
     portfolio_heading:   'My Work',
-    portfolio_sub:       "Projects I've built across WordPress, Salla, and Training",
+    portfolio_sub:       "Projects I've built across WordPress, Salla, and Shopify",
     filter_all:          'All',
     filter_wp:           'WordPress',
     filter_salla:        'Salla',
-    filter_training:     'Training',
+    filter_shopify:     'Shopify',
     results_all:         'All Projects',
     /* ── Contact ────────────────────────────── */
     contact_heading:     'Get In Touch',
